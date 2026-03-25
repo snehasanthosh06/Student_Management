@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h1>Edit Student</h1>
+            <form action="{{ url_for('logout') }}" method="post">
+                <button class="btn-logout" type="submit">Logout</button>
+            </form>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+            <form method="post" class="form-grid">
+                <input type="text" name="roll_number" value="{{ student.roll_number or '' }}" placeholder="Roll Number" required>
+                <input type="text" name="name" value="{{ student.name }}" required>
+                <input type="email" name="email" value="{{ student.email }}" required>
+                <input type="number" name="age" value="{{ student.age }}" min="1" required>
+                <input type="text" name="student_class" value="{{ student.student_class }}" required>
+                <input type="number" step="0.01" name="marks" value="{{ student.marks }}" min="0" max="100" required>
+                <input type="number" step="0.01" name="attendance" value="{{ student.attendance }}" min="0" max="100" required>
+                <button type="submit">Update Student</button>
+            </form>
+            <a class="back-link" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </section>
+    </div>
+</body>
+</html>

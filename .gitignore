@@ -1,0 +1,25 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Databases / local data
+students.db
+*.db
+
+# Credentials
+.env
+
+# Reports / temp artifacts
+*.docx
+*.pdf
+*.md~
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.cursor/
+.vscode/

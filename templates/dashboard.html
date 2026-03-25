@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h1>Student Management System</h1>
+            <div class="top-actions">
+                <span class="role-badge">ADMIN</span>
+                <form action="{{ url_for('logout') }}" method="post">
+                    <button class="btn-logout" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+            <h2>Add Student</h2>
+            <form action="{{ url_for('add_student') }}" method="post" class="form-grid">
+                <input type="text" name="roll_number" placeholder="Roll Number" required>
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="number" name="age" placeholder="Age" min="1" required>
+                <input type="text" name="student_class" placeholder="Class" required>
+                <input type="number" step="0.01" name="marks" placeholder="Marks (0-100)" min="0" max="100" required>
+                <input type="number" step="0.01" name="attendance" placeholder="Attendance % (0-100)" min="0" max="100" required>
+                <button type="submit">Add Student</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Search / Filter / Sort</h2>
+            <form action="{{ url_for('dashboard') }}" method="get" class="filter-grid">
+                <input type="text" name="name" placeholder="Search Name" value="{{ filters.name }}">
+                <input type="text" name="roll_number" placeholder="Search Roll Number" value="{{ filters.roll_number }}">
+                <input type="text" name="student_class" placeholder="Search Class" value="{{ filters.student_class }}">
+                <select name="sort_by">
+                    <option value="id" {% if filters.sort_by == 'id' %}selected{% endif %}>Sort: ID</option>
+                    <option value="name" {% if filters.sort_by == 'name' %}selected{% endif %}>Sort: Name</option>
+                    <option value="roll_number" {% if filters.sort_by == 'roll_number' %}selected{% endif %}>Sort: Roll Number</option>
+                    <option value="student_class" {% if filters.sort_by == 'student_class' %}selected{% endif %}>Sort: Class</option>
+                    <option value="marks" {% if filters.sort_by == 'marks' %}selected{% endif %}>Sort: Marks</option>
+                    <option value="attendance" {% if filters.sort_by == 'attendance' %}selected{% endif %}>Sort: Attendance</option>
+                </select>
+                <select name="sort_order">
+                    <option value="asc" {% if filters.sort_order == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if filters.sort_order == 'desc' %}selected{% endif %}>Descending</option>
+                </select>
+                <button type="submit">Apply</button>
+                <a class="btn-reset" href="{{ url_for('dashboard') }}">Reset</a>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Student Records</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Roll Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Age</th>
+                            <th>Class</th>
+                            <th>Marks</th>
+                            <th>Attendance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td>{{ student.id }}</td>
+                                <td>{{ student.roll_number or '-' }}</td>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.age }}</td>
+                                <td>{{ student.student_class }}</td>
+                                <td>{{ "%.2f"|format(student.marks) }}</td>
+                                <td>{{ "%.2f"|format(student.attendance) }}%</td>
+                                <td class="actions">
+                                    <a class="btn-edit" href="{{ url_for('edit_student', student_id=student.id) }}">Edit</a>
+                                    <form action="{{ url_for('delete_student', student_id=student.id) }}" method="post">
+                                        <button class="btn-delete" type="submit" onclick="return confirm('Delete this student?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="empty">No students found for current filters.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+

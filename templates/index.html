@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='front.css') }}">
+</head>
+<body>
+    <header class="nav">
+        <div class="brand">
+            <div class="brand-mark"></div>
+            <div class="brand-text">
+                <div class="brand-title">StudentMS</div>
+                <div class="brand-subtitle">Marks • Attendance • CRUD</div>
+            </div>
+        </div>
+        <nav class="nav-actions">
+            <a class="btn btn-ghost" href="#features">Features</a>
+            <a class="btn btn-primary" href="{{ url_for('login') }}">Admin Login</a>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <div class="hero-bg" aria-hidden="true"></div>
+
+        <section class="hero-content">
+            <h1 class="hero-title">
+                Manage student records
+                <span class="hero-highlight">fast</span>
+                and
+                <span class="hero-highlight hero-highlight-2">secure</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                A clean and modern Student Management System with admin authentication, CRUD operations, and powerful search/sort.
+            </p>
+
+            <div class="hero-rotator" aria-live="polite">
+                <span class="pill">Highlights:</span>
+                <span class="rotating-text" id="rotatingText">Secure Admin</span>
+            </div>
+
+            <div class="hero-ctas">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}">Go to Admin Login</a>
+                <button class="btn btn-ghost btn-lg" id="scrollToFeatures" type="button">Explore Features</button>
+            </div>
+
+            <div class="hero-panels">
+                <div class="panel">
+                    <div class="panel-icon">+</div>
+                    <div class="panel-title">CRUD Operations</div>
+                    <div class="panel-text">Add, update, delete, and list student records.</div>
+                </div>
+                <div class="panel">
+                    <div class="panel-icon">%</div>
+                    <div class="panel-title">Marks & Attendance</div>
+                    <div class="panel-text">Track marks and attendance with validation (0–100).</div>
+                </div>
+                <div class="panel">
+                    <div class="panel-icon">Q</div>
+                    <div class="panel-title">Search & Sorting</div>
+                    <div class="panel-text">Find students by name, roll number, and class.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section id="features" class="section section-features">
+        <h2 class="section-title">Interactive Features</h2>
+        <p class="section-lead">
+            Click to expand each feature and see what the project does.
+        </p>
+
+        <div class="accordion" id="accordion">
+            <div class="acc-item">
+                <button class="acc-btn" type="button" data-acc="0">
+                    Admin Authentication
+                    <span class="acc-icon">+</span>
+                </button>
+                <div class="acc-panel">
+                    <p>
+                        Access to the dashboard is protected. Login is required before you can add, edit, or delete records.
+                    </p>
+                </div>
+            </div>
+
+            <div class="acc-item">
+                <button class="acc-btn" type="button" data-acc="1">
+                    Student CRUD (Add / Edit / Delete)
+                    <span class="acc-icon">+</span>
+                </button>
+                <div class="acc-panel">
+                    <p>
+                        Create new student entries, update details, and remove records from the system.
+                    </p>
+                </div>
+            </div>
+
+            <div class="acc-item">
+                <button class="acc-btn" type="button" data-acc="2">
+                    Search by Name / Roll / Class
+                    <span class="acc-icon">+</span>
+                </button>
+                <div class="acc-panel">
+                    <p>
+                        Quickly filter results and optionally sort by important fields.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-demo">
+        <h2 class="section-title">Quick Demo</h2>
+        <div class="demo-grid">
+            <div class="demo-card">
+                <div class="demo-kpi">
+                    <div class="demo-kpi-value" id="kpiStudents">0</div>
+                    <div class="demo-kpi-label">Students in DB</div>
+                </div>
+                <p class="demo-note">For a live count, login and view the dashboard table.</p>
+            </div>
+            <div class="demo-card">
+                <div class="demo-kpi">
+                    <div class="demo-kpi-value">0–100</div>
+                    <div class="demo-kpi-label">Marks & Attendance</div>
+                </div>
+                <p class="demo-note">The app validates numeric ranges to keep data consistent.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>Student Management System</div>
+            <div class="footer-muted">Built with Flask + MySQL</div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='front.js') }}"></script>
+</body>
+</html>

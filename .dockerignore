@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+students.db
+*.db
+*.docx
+*.md
+Project_Report_Assignment_2.md
+Project_Report_Assignment_2.docx
+Project_Report_Assignment_2.doc
+terminals/
+.git/
