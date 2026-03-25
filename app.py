@@ -48,50 +48,9 @@ def get_connection():
     raise last_err
 
 
-def get_server_connection():
-    """
-    Connect to the MySQL server without assuming the target database exists yet.
-    Used by init_db() to create database/schema safely during container startup.
-    """
-    retries = int(os.getenv("DB_CONNECT_RETRIES", "20"))
-    delay_s = float(os.getenv("DB_CONNECT_DELAY_SECONDS", "1.5"))
-    last_err = None
-
-    for _ in range(retries):
-        try:
-            return pymysql.connect(
-                host=app.config["DB_HOST"],
-                port=app.config["DB_PORT"],
-                user=app.config["DB_USER"],
-                password=app.config["DB_PASSWORD"],
-                database="mysql",
-                cursorclass=DictCursor,
-                autocommit=True,
-            )
-        except pymysql.err.OperationalError as exc:
-            last_err = exc
-            time.sleep(delay_s)
-
-    raise last_err
-
-
 def init_db():
-    server_conn = get_server_connection()
-    with server_conn.cursor() as cursor:
-        # In Docker Compose setups the database is often created by MySQL init scripts.
-        # If the DB user doesn't have CREATE DATABASE privileges, we just continue.
-        try:
-            cursor.execute(
-                f"""
-                CREATE DATABASE IF NOT EXISTS {app.config["DB_NAME"]}
-                CHARACTER SET utf8mb4
-                COLLATE utf8mb4_unicode_ci
-                """
-            )
-        except Exception:
-            pass
-    server_conn.close()
-
+    # MySQL init scripts (docker-compose) typically create the database already.
+    # Connecting directly to DB_NAME avoids needing privileges on system schemas.
     conn = get_connection()
     with conn.cursor() as cursor:
         cursor.execute(
